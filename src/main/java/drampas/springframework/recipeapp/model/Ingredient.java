@@ -12,10 +12,20 @@ public class Ingredient {
     private Long id;
     @ManyToOne
     private Recipe recipe;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER) //should be EAGER by default,just a reminder
     private UnitOfMeasure unitOfMeasure;
     private String description;
     private BigDecimal amount;
+
+    public Ingredient() {
+    }
+
+    public Ingredient(Recipe recipe, UnitOfMeasure unitOfMeasure, String description, BigDecimal amount) {
+        this.recipe = recipe;
+        this.unitOfMeasure = unitOfMeasure;
+        this.description = description;
+        this.amount = amount;
+    }
 
     public Long getId() {
         return id;
