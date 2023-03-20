@@ -4,6 +4,7 @@ import drampas.springframework.recipeapp.model.*;
 import drampas.springframework.recipeapp.repositories.CategoryRepository;
 import drampas.springframework.recipeapp.repositories.RecipeRepository;
 import drampas.springframework.recipeapp.repositories.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.*;
 
+@Slf4j
 @Component
 public class DataInitializer implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -28,7 +30,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
     public void onApplicationEvent(ContextRefreshedEvent event) {
 
         recipeRepository.saveAll(getRecipes());
-        System.out.println("loading data");
+        log.debug("loading Bootstrap data");
     }
 
 
