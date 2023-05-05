@@ -115,7 +115,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
                 "Refrigerate leftover guacamole up to 3 days. ");
 
         Notes guacamoleNotes=new Notes();
-        guacamoleNotes.setNotes("Chilling tomatoes hurts their flavor. So, if you want to add chopped tomato to your guacamole, add it just before serving");
+        guacamoleNotes.setRecipeNotes("Chilling tomatoes hurts their flavor. So, if you want to add chopped tomato to your guacamole, add it just before serving");
         guacamoleNotes.setRecipe(guacamole);
         guacamole.setNotes(guacamoleNotes);
 
@@ -163,7 +163,7 @@ public class DataInitializer implements ApplicationListener<ContextRefreshedEven
                         "Wrap warmed tortillas in a tea towel to keep them warm until serving. ");
 
         Notes chickenTacosNotes=new Notes();
-        chickenTacosNotes.setNotes("Look for ancho chile powder with the Mexican ingredients at your grocery store, on buy it online. (If you can't find ancho chili powder, you replace the ancho chili, the oregano, and the cumin with 2 1/2 tablespoons regular chili powder, though the flavor won't be quite the same.)");
+        chickenTacosNotes.setRecipeNotes("Look for ancho chile powder with the Mexican ingredients at your grocery store, on buy it online. (If you can't find ancho chili powder, you replace the ancho chili, the oregano, and the cumin with 2 1/2 tablespoons regular chili powder, though the flavor won't be quite the same.)");
         chickenTacosNotes.setRecipe(chickenTacos);
         chickenTacos.setNotes(chickenTacosNotes);
 
