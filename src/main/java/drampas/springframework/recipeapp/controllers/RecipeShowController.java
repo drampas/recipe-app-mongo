@@ -2,6 +2,7 @@ package drampas.springframework.recipeapp.controllers;
 
 import drampas.springframework.recipeapp.commands.RecipeCommand;
 import drampas.springframework.recipeapp.services.RecipeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+@Slf4j
 @Controller
 public class RecipeShowController {
     private final RecipeService recipeService;
@@ -35,5 +37,11 @@ public class RecipeShowController {
     public String saveOrUpdate(@ModelAttribute RecipeCommand recipeCommand){
         RecipeCommand savedCommand=recipeService.saveRecipeCommand(recipeCommand);
         return "redirect:/recipe/show/"+savedCommand.getId();
+    }
+    @RequestMapping("/recipe/delete/{id}")
+    public String deleteRecipe(@PathVariable String id){
+        log.debug("deleting id:"+id);
+        recipeService.deleteById(Long.valueOf(id));
+        return "redirect:/recipes";
     }
 }
