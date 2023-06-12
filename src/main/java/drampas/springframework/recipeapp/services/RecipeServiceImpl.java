@@ -3,6 +3,7 @@ package drampas.springframework.recipeapp.services;
 import drampas.springframework.recipeapp.commands.RecipeCommand;
 import drampas.springframework.recipeapp.converters.RecipeCommandToRecipe;
 import drampas.springframework.recipeapp.converters.RecipeToRecipeCommand;
+import drampas.springframework.recipeapp.exceptions.NotFoundException;
 import drampas.springframework.recipeapp.model.Recipe;
 import drampas.springframework.recipeapp.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +39,7 @@ public class RecipeServiceImpl implements RecipeService {
     public Recipe findById(Long id) {
         Optional<Recipe> optionalRecipe=recipeRepository.findById(id);
         if(!optionalRecipe.isPresent()){
-            throw new RuntimeException("Recipe not found");
+            throw new NotFoundException("Recipe not found,for recipe id:"+id);
         }
         return optionalRecipe.get();
     }
