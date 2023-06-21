@@ -28,6 +28,7 @@ public class Recipe {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "recipe")
     private Set<Ingredient> ingredients=new HashSet<>();
     @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private Byte[] image;
     @ManyToMany
     @JoinTable(name = "recipe_category",joinColumns = @JoinColumn(name = "recipe_id"),
