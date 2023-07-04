@@ -13,11 +13,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 class RecipeShowControllerTest {
@@ -36,8 +35,8 @@ class RecipeShowControllerTest {
     @Test
     void getRecipeShowPage() throws Exception {
         Recipe recipe=new Recipe();
-        recipe.setId(1L);
-        when(recipeService.findById(anyLong())).thenReturn(recipe);
+        recipe.setId("1");
+        when(recipeService.findById(anyString())).thenReturn(recipe);
         mockMvc.perform(get("/recipe/show/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/show"))
@@ -55,8 +54,8 @@ class RecipeShowControllerTest {
     @Test
     void updateRecipe() throws Exception {
         RecipeCommand recipeCommand=new RecipeCommand();
-        recipeCommand.setId(2L);
-        when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
+        recipeCommand.setId("2");
+        when(recipeService.findCommandById(anyString())).thenReturn(recipeCommand);
         mockMvc.perform(get("/recipe/update/2"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/recipeform"))
@@ -66,7 +65,7 @@ class RecipeShowControllerTest {
     @Test
     void saveOrUpdate() throws Exception {
         RecipeCommand command = new RecipeCommand();
-        command.setId(2L);
+        command.setId("2");
 
         when(recipeService.saveRecipeCommand(any())).thenReturn(command);
 

@@ -1,28 +1,23 @@
 package drampas.springframework.recipeapp.model;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
-@EqualsAndHashCode(exclude = {"recipes"})
-@Entity
+@Getter
+@Setter
+@Document
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private String id;
     private String description;
-    @ManyToMany(mappedBy = "categories")
+    @DBRef
     private Set<Recipe> recipes=new HashSet<>();
-
     public Category() {
-    }
-
-    protected boolean canEqual(final Object other) {
-        return other instanceof Category;
     }
 
 }

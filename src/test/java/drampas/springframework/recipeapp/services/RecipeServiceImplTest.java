@@ -51,13 +51,13 @@ class RecipeServiceImplTest {
     @Test
     void findById() {
         Recipe recipe=new Recipe();
-        recipe.setId(1L);
+        recipe.setId("1");
         Optional<Recipe> optionalRecipe=Optional.of(recipe);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(optionalRecipe);
-        Recipe recipeReturned=recipeService.findById(1L);
+        when(recipeRepository.findById(anyString())).thenReturn(optionalRecipe);
+        Recipe recipeReturned=recipeService.findById("1");
         assertNotNull(recipeReturned,"Null recipe returned");
-        verify(recipeRepository,times(1)).findById(anyLong());
+        verify(recipeRepository,times(1)).findById(anyString());
         verify(recipeRepository,never()).findAll();
     }
 
@@ -65,11 +65,11 @@ class RecipeServiceImplTest {
     void saveRecipeCommandTest() {
         // Given
         RecipeCommand command = new RecipeCommand();
-        command.setId(1L);
+        command.setId("1");
         Recipe detachedRecipe = new Recipe();
-        detachedRecipe.setId(1L);
+        detachedRecipe.setId("1");
         Recipe savedRecipe = new Recipe();
-        savedRecipe.setId(1L);
+        savedRecipe.setId("1");
 
         when(recipeCommandToRecipe.convert(any())).thenReturn(detachedRecipe);
         when(recipeRepository.save(any())).thenReturn(savedRecipe);
@@ -82,7 +82,7 @@ class RecipeServiceImplTest {
         verify(recipeCommandToRecipe, times(1)).convert(command);
         verify(recipeRepository, times(1)).save(detachedRecipe);
         verify(recipeToRecipeCommand, times(1)).convert(savedRecipe);
-        assertEquals(1L, savedCommand.getId());
+        assertEquals("1", savedCommand.getId());
     }
 
 }

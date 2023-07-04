@@ -22,7 +22,7 @@ public class RecipeShowController {
     }
     @RequestMapping("/recipe/show/{id}")
     public String getRecipeShowPage(@PathVariable String id,Model model){
-        model.addAttribute("recipe",recipeService.findById(Long.valueOf(id)));
+        model.addAttribute("recipe",recipeService.findById(id));
         return "recipe/show";
     }
     @RequestMapping("/recipe/new")
@@ -32,7 +32,7 @@ public class RecipeShowController {
     }
     @RequestMapping("recipe/update/{id}")
     public String updateRecipe(@PathVariable String id,Model model){
-        model.addAttribute("recipe",recipeService.findCommandById(Long.valueOf(id)));
+        model.addAttribute("recipe",recipeService.findCommandById(id));
         return "recipe/recipeform";
     }
     @PostMapping("/recipe/") //"recipe" or "/recipe" not working???
@@ -49,7 +49,7 @@ public class RecipeShowController {
     @RequestMapping("/recipe/delete/{id}")
     public String deleteRecipe(@PathVariable String id){
         log.debug("deleting id:"+id);
-        recipeService.deleteById(Long.valueOf(id));
+        recipeService.deleteById(id);
         return "redirect:/recipes";
     }
     @ResponseStatus(HttpStatus.NOT_FOUND)

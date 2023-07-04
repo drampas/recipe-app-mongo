@@ -27,17 +27,17 @@ public class ImageController {
 
     @RequestMapping("/recipe/{recipeId}/image")
     public String getImageUploadForm(@PathVariable String recipeId, Model model){
-        model.addAttribute("recipe",recipeService.findCommandById(Long.valueOf(recipeId)));
+        model.addAttribute("recipe",recipeService.findCommandById(recipeId));
         return "/recipe/imageuploadform";
     }
     @PostMapping("/recipe/{recipeId}/image")
     public String uploadImage(@PathVariable String recipeId,@RequestParam("imagefile") MultipartFile file){
-        imageService.saveImage(Long.valueOf(recipeId),file);
+        imageService.saveImage(recipeId,file);
         return "redirect:/recipe/show/"+recipeId;
     }
     @GetMapping("/recipe/{recipeId}/recipeimage")
     public void renderImage(@PathVariable String recipeId, HttpServletResponse response) throws IOException {
-        RecipeCommand recipeCommand=recipeService.findCommandById(Long.valueOf(recipeId));
+        RecipeCommand recipeCommand=recipeService.findCommandById(recipeId);
         if(recipeCommand.getImage()!=null){
             byte[] image=new byte[recipeCommand.getImage().length];
             int i=0;
