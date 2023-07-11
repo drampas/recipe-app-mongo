@@ -1,24 +1,29 @@
 package drampas.springframework.recipeapp.model;
 
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.math.BigDecimal;
+import java.util.UUID;
+
 @Getter
 @Setter
 public class Ingredient {
 
-    @Id
-    private String id;
+    private String id= UUID.randomUUID().toString();
     //@DBRef
     //private Recipe recipe;
-    @DBRef
     private UnitOfMeasure unitOfMeasure;
     private String description;
     private BigDecimal amount;
 
     public Ingredient() {
+    }
+
+    public Ingredient(String id, UnitOfMeasure unitOfMeasure, String description, BigDecimal amount) {
+        this.id = id;
+        this.unitOfMeasure = unitOfMeasure;
+        this.description = description;
+        this.amount = amount;
     }
 
     public Ingredient(Recipe recipe, UnitOfMeasure unitOfMeasure, String description, BigDecimal amount) {

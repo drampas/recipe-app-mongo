@@ -4,13 +4,16 @@ import drampas.springframework.recipeapp.commands.RecipeCommand;
 import drampas.springframework.recipeapp.converters.RecipeCommandToRecipe;
 import drampas.springframework.recipeapp.converters.RecipeToRecipeCommand;
 import drampas.springframework.recipeapp.model.Recipe;
-import drampas.springframework.recipeapp.repositories.RecipeRepository;
+import drampas.springframework.recipeapp.repositories.reactive.RecipeReactiveRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -23,7 +26,7 @@ class RecipeServiceImplTest {
 
     RecipeServiceImpl recipeService;
     @Mock
-    RecipeRepository recipeRepository;
+    RecipeReactiveRepository recipeReactiveRepository;
     @Mock
     RecipeToRecipeCommand recipeToRecipeCommand;
     @Mock
@@ -31,7 +34,7 @@ class RecipeServiceImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        recipeService=new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
+        recipeService=new RecipeServiceImpl(recipeReactiveRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
@@ -40,11 +43,11 @@ class RecipeServiceImplTest {
         Recipe recipe=new Recipe();
         HashSet<Recipe> recipeSet=new HashSet<>();
         recipeSet.add(recipe);
-        when(recipeRepository.findAll()).thenReturn(recipeSet);
+        when(recipeService.getRecipes()).thenReturn(Flux.fromIterable(recipeSet));
 
-        Set<Recipe> recipes=recipeService.getRecipes();
-        assertEquals(recipes.size(),1);
-        verify(recipeRepository,times(1)).findAll();
+        List<Recipe> recipeList=recipeService.getRecipes().collectList().block();
+        assertEquals(recipeList.size(),1);
+        verify(recipeReactiveRepository,times(1)).findAll();
 
     }
 
@@ -52,13 +55,13 @@ class RecipeServiceImplTest {
     void findById() {
         Recipe recipe=new Recipe();
         recipe.setId("1");
-        Optional<Recipe> optionalRecipe=Optional.of(recipe);
 
-        when(recipeRepository.findById(anyString())).thenReturn(optionalRecipe);
-        Recipe recipeReturned=recipeService.findById("1");
+        when(recipeReactiveRepository.findById(anyString())).thenReturn(Mono.just(recipe));
+        Recipe recipeReturned=recipeService.findById("1").block();
+
         assertNotNull(recipeReturned,"Null recipe returned");
-        verify(recipeRepository,times(1)).findById(anyString());
-        verify(recipeRepository,never()).findAll();
+        verify(recipeReactiveRepository,times(1)).findById(anyString());
+        verify(recipeReactiveRepository,never()).findAll();
     }
 
     @Test
@@ -72,15 +75,15 @@ class RecipeServiceImplTest {
         savedRecipe.setId("1");
 
         when(recipeCommandToRecipe.convert(any())).thenReturn(detachedRecipe);
-        when(recipeRepository.save(any())).thenReturn(savedRecipe);
+        when(recipeReactiveRepository.save(any())).thenReturn(Mono.just(savedRecipe));
         when(recipeToRecipeCommand.convert(any())).thenReturn(command);
 
         // When
-        RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
+        RecipeCommand savedCommand = recipeService.saveRecipeCommand(command).block();
 
         // Then
         verify(recipeCommandToRecipe, times(1)).convert(command);
-        verify(recipeRepository, times(1)).save(detachedRecipe);
+        verify(recipeReactiveRepository, times(1)).save(detachedRecipe);
         verify(recipeToRecipeCommand, times(1)).convert(savedRecipe);
         assertEquals("1", savedCommand.getId());
     }

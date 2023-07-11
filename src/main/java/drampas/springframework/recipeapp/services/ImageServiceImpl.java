@@ -1,29 +1,29 @@
 package drampas.springframework.recipeapp.services;
 
 import drampas.springframework.recipeapp.model.Recipe;
-import drampas.springframework.recipeapp.repositories.RecipeRepository;
+import drampas.springframework.recipeapp.repositories.reactive.RecipeReactiveRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.util.Optional;
+
 @Service
 @Slf4j
 public class ImageServiceImpl implements ImageService{
 
-    private final RecipeRepository recipeRepository;
+    private final RecipeReactiveRepository recipeReactiveRepository;
 
-    public ImageServiceImpl(RecipeRepository recipeRepository) {
-        this.recipeRepository = recipeRepository;
+    public ImageServiceImpl(RecipeReactiveRepository recipeReactiveRepository) {
+        this.recipeReactiveRepository = recipeReactiveRepository;
     }
 
     @Override
-    public void saveImage(String recipeId, MultipartFile file) {
+    public Mono<Void> saveImage(String recipeId, MultipartFile file) {
 
-        Optional<Recipe> recipeOptional=recipeRepository.findById(recipeId);
-        if(recipeOptional.isPresent()){
-            Recipe recipe=recipeOptional.get();
+        Recipe recipe= recipeReactiveRepository.findById(recipeId).block();
+        if(recipe!=null){
             try {
                 Byte[] byteObject=new Byte[file.getBytes().length];
                 int i=0;
@@ -32,7 +32,7 @@ public class ImageServiceImpl implements ImageService{
                     i++;
                 }
                 recipe.setImage(byteObject);
-                recipeRepository.save(recipe);
+                recipeReactiveRepository.save(recipe).block();
             } catch (IOException e) {
                 log.error("An error has occurred: ",e);
                 e.printStackTrace();
@@ -41,5 +41,6 @@ public class ImageServiceImpl implements ImageService{
             log.debug("Recipe not found");
         }
 
+        return Mono.empty();
     }
 }

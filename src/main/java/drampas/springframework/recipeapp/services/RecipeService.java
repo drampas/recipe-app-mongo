@@ -2,14 +2,15 @@ package drampas.springframework.recipeapp.services;
 
 import drampas.springframework.recipeapp.commands.RecipeCommand;
 import drampas.springframework.recipeapp.model.Recipe;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.Set;
 
 public interface RecipeService {
 
-    Set<Recipe> getRecipes();
-    Recipe findById(String id);
-    RecipeCommand saveRecipeCommand(RecipeCommand command);
-    RecipeCommand findCommandById(String id);
-    void deleteById(String id);
+    Flux<Recipe> getRecipes();
+    Mono<Recipe> findById(String id);
+    Mono<RecipeCommand> saveRecipeCommand(RecipeCommand command);
+    Mono<RecipeCommand> findCommandById(String id);
+    Mono<Void> deleteById(String id);
 }

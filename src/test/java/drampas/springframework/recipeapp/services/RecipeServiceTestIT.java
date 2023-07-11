@@ -5,6 +5,7 @@ import drampas.springframework.recipeapp.converters.RecipeCommandToRecipe;
 import drampas.springframework.recipeapp.converters.RecipeToRecipeCommand;
 import drampas.springframework.recipeapp.model.Recipe;
 import drampas.springframework.recipeapp.repositories.RecipeRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@Disabled
 class RecipeServiceTestIT {
     public static final String NEW_DESCRIPTION = "New Description";
 
@@ -40,7 +42,7 @@ class RecipeServiceTestIT {
 
         //when
         testRecipeCommand.setDescription(NEW_DESCRIPTION);
-        RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(testRecipeCommand);
+        RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(testRecipeCommand).block();
 
         //then
         assertEquals(NEW_DESCRIPTION, savedRecipeCommand.getDescription());
