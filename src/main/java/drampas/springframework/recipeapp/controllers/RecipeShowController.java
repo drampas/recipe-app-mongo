@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+//import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
 @Controller
@@ -22,7 +22,7 @@ public class RecipeShowController {
     }
     @RequestMapping("/recipe/show/{id}")
     public String getRecipeShowPage(@PathVariable String id,Model model){
-        model.addAttribute("recipe",recipeService.findById(id).block());
+        model.addAttribute("recipe",recipeService.findById(id));
         return "recipe/show";
     }
     @RequestMapping("/recipe/new")
@@ -32,10 +32,11 @@ public class RecipeShowController {
     }
     @RequestMapping("recipe/update/{id}")
     public String updateRecipe(@PathVariable String id,Model model){
-        model.addAttribute("recipe",recipeService.findCommandById(id).block());
+        model.addAttribute("recipe",recipeService.findCommandById(id));
         return "recipe/recipeform";
     }
-    @PostMapping("/recipe/") //"recipe" or "/recipe" not working???
+    //"recipe" or "/recipe" not working???
+    @PostMapping("/recipe/")
     public String saveOrUpdate(@Valid @ModelAttribute("recipe") RecipeCommand recipeCommand, BindingResult result){
         if(result.hasErrors()){
             result.getAllErrors().forEach(objectError -> {
@@ -52,15 +53,15 @@ public class RecipeShowController {
         recipeService.deleteById(id);
         return "redirect:/recipes";
     }
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NotFoundException.class)
-    public ModelAndView handleNotFound(Exception exception){
-        log.error("Not found exception");
-        log.error(exception.getMessage());
-        ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("404error");
-        modelAndView.addObject("exception",exception);
-        return modelAndView;
-    }
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    @ExceptionHandler(NotFoundException.class)
+//    public ModelAndView handleNotFound(Exception exception){
+//        log.error("Not found exception");
+//        log.error(exception.getMessage());
+//        ModelAndView modelAndView=new ModelAndView();
+//        modelAndView.setViewName("404error");
+//        modelAndView.addObject("exception",exception);
+//        return modelAndView;
+//    }
 
 }

@@ -19,28 +19,28 @@ public class ImageServiceImpl implements ImageService{
         this.recipeReactiveRepository = recipeReactiveRepository;
     }
 
-    @Override
-    public Mono<Void> saveImage(String recipeId, MultipartFile file) {
-
-        Recipe recipe= recipeReactiveRepository.findById(recipeId).block();
-        if(recipe!=null){
-            try {
-                Byte[] byteObject=new Byte[file.getBytes().length];
-                int i=0;
-                for(byte b:file.getBytes()){
-                    byteObject[i]=b;
-                    i++;
-                }
-                recipe.setImage(byteObject);
-                recipeReactiveRepository.save(recipe).block();
-            } catch (IOException e) {
-                log.error("An error has occurred: ",e);
-                e.printStackTrace();
-            }
-        }else {
-            log.debug("Recipe not found");
-        }
-
-        return Mono.empty();
-    }
+//    @Override
+//    public Mono<Void> saveImage(String recipeId, MultipartFile file) {
+//
+//        Recipe recipe= recipeReactiveRepository.findById(recipeId).block();
+//        if(recipe!=null){
+//            try {
+//                Byte[] byteObject=new Byte[file.getBytes().length];
+//                int i=0;
+//                for(byte b:file.getBytes()){
+//                    byteObject[i]=b;
+//                    i++;
+//                }
+//                recipe.setImage(byteObject);
+//                recipeReactiveRepository.save(recipe).block();
+//            } catch (IOException e) {
+//                log.error("An error has occurred: ",e);
+//                e.printStackTrace();
+//            }
+//        }else {
+//            log.debug("Recipe not found");
+//        }
+//
+//        return Mono.empty();
+//    }
 }

@@ -19,7 +19,7 @@ public class RecipeController {
     @RequestMapping({"/recipes","/recipes.html"})
     public String getRecipesPage(Model model){
         log.debug("Getting recipes page");
-        model.addAttribute("recipes",recipeService.getRecipes().collectList().block());
+        model.addAttribute("recipes",recipeService.getRecipes());
         return "recipes";
     }
 }

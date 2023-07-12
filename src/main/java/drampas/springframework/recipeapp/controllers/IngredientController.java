@@ -36,13 +36,13 @@ public class IngredientController {
     @RequestMapping("/recipe/{recipeId}/ingredient/{id}/show")
     public String showRecipeIngredient(@PathVariable String recipeId,@PathVariable String id,Model model){
         log.debug("Getting ingredient id:"+id+"for recipe id:"+recipeId);
-        model.addAttribute("ingredient",ingredientService.findByRecipeIdAndIngredientId(recipeId,id).block());
+        model.addAttribute("ingredient",ingredientService.findByRecipeIdAndIngredientId(recipeId,id));
         return "/recipe/ingredient/show";
     }
     @RequestMapping("/recipe/{recipeId}/ingredient/{id}/update")
     public String updateRecipeIngredient(@PathVariable String recipeId,@PathVariable String id,Model model){
-        model.addAttribute("ingredient",ingredientService.findByRecipeIdAndIngredientId(recipeId,id).block());
-        model.addAttribute("uomList",unitOfMeasureService.listAllUom().collectList().block());
+        model.addAttribute("ingredient",ingredientService.findByRecipeIdAndIngredientId(recipeId,id));
+        model.addAttribute("uomList",unitOfMeasureService.listAllUom());
         return "/recipe/ingredient/ingredientform";
     }
     @PostMapping("/recipe/{recipeId}/ingredient")
@@ -60,7 +60,7 @@ public class IngredientController {
         model.addAttribute("ingredient",ingredientCommand);
 
         ingredientCommand.setUnitOfMeasure(new UnitOfMeasureCommand());
-        model.addAttribute("uomList",unitOfMeasureService.listAllUom().collectList().block());
+        model.addAttribute("uomList",unitOfMeasureService.listAllUom());
         return "/recipe/ingredient/ingredientform";
     }
     @RequestMapping("/recipe/{recipeId}/ingredient/{id}/delete")
